@@ -3,11 +3,16 @@ function initializeRecentQuestions() {
     let qus = JSON.parse(localStorage.getItem("recent_questions"));
     if (qus && qus.length > 0) {
         qus.reverse();
-    }
-    for (let i = 0; i < qus.length; i++) {
-        appendRecentQuestion(qus[i]);
+        for (let i = 0; i < qus.length; i++) {
+            appendRecentQuestion(qus[i]);
+        }
+    } else {
+        let recentEle = document.getElementById("recent_questions");
+        recentEle.innerHTML = "<small>আপনি এখনও কিছু জিজ্ঞাসা করেননি</small>";
     }
 }
+
+
 
 function appendRecentQuestion(question) {
     let recentEle = document.getElementById("recent_questions");
@@ -18,7 +23,6 @@ function appendRecentQuestion(question) {
     });
     button.innerHTML = question;
     recentEle.insertBefore(button, recentEle.firstChild)
-    // recentEle.appendChild(button);
 }
 
 function frequentQuestion(content) {
@@ -33,29 +37,33 @@ userInput.onkeyup = function(e){
     }
 }
 
-function storeSearches(userInput) {
-    let userInputs = [];
-    let time = Date.now.toLocaleString();
-    userInputs = JSON.parse(localStorage.getItem('recent_questions')) || [];
-    if (!userInputs.includes(userInput)){
-        userInputs.push(userInput);
-        localStorage.setItem('recent_questions', JSON.stringify(userInputs));
-        appendRecentQuestion(userInput);
-    }
-}
 async function sendMessage() {
     let userInput = document.getElementById("user-input").value;
     if (!userInput.trim()) return;
 
-    storeSearches(userInput);
+    let userInputs = [];
+    userInputs = JSON.parse(localStorage.getItem('recent_questions')) || [];
+    if (!userInputs.includes(userInput)){
+        if (userInputs.length === 0) {
+            let recentEle = document.getElementById("recent_questions");
+            recentEle.innerHTML = "";
+        }
+        userInputs.push(userInput);
+        localStorage.setItem('recent_questions', JSON.stringify(userInputs));
+        appendRecentQuestion(userInput);
+    }
 
+    let chatBox = document.getElementById("chat-box-wrapper");
+    console.log(chatBox);
+    if (chatBox) {
+        chatBox.innerHTML += `<div class='user-message'>${userInput}</div>`;
+        document.getElementById("user-input").value = "";
+    }
 
-    let chatBox = document.getElementById("chat-box");
-    chatBox.innerHTML += `<div class='user-message'>${userInput}</div>`;
-    document.getElementById("user-input").value = "";
     let loaderDiv = document.createElement("div");
     loaderDiv.classList.add("loader");
-    loaderDiv.innerHTML = "জানাইতেছি, একটু সবুর করেন...";
+    loaderDiv.innerHTML = "জানাচ্ছি, একটু অপেক্ষা করেন...";
+
     chatBox.appendChild(loaderDiv);
     chatBox.scrollTop = chatBox.scrollHeight;
 
