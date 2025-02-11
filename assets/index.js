@@ -118,7 +118,7 @@ async function sendMessage() {
     }
 
     let chatBox = document.getElementById("chat-box-wrapper");
-    console.log(chatBox);
+
     if (chatBox) {
         chatBox.innerHTML += `<div class='user-message'>${userInput}</div>`;
         document.getElementById("user-input").value = "";
@@ -134,7 +134,10 @@ async function sendMessage() {
     try {
         let response = await axios.post("https://api.together.xyz/v1/chat/completions", {
             model: "meta-llama/Llama-3.3-70B-Instruct-Turbo",
-            messages: [{role: "user", content: userInput}]
+            messages: [
+                {role: "system", content: "You are an AI assistant specialized in answering questions about Islamic studies. Provide accurate, concise, and respectful responses. If unsure about an answer, indicate the need for further research. Please provide the information formatted in Markdown."},
+                {role: "user", content: userInput},
+            ]
         }, {
             headers: { "Authorization": "Bearer 146256ab83c558e84c2283e270855da846ff4ea4941a6cac109161c06167d88f" }
         });
@@ -142,20 +145,34 @@ async function sendMessage() {
         loaderDiv.remove();
 
         let botMessage = response.data.choices[0].message.content;
+        const dirtyHtmlContent = marked.parse(botMessage);
+        const htmlContent = DOMPurify.sanitize(dirtyHtmlContent);
         let botMessageDiv = document.createElement("div");
         botMessageDiv.classList.add("bot-message");
         chatBox.appendChild(botMessageDiv);
+        // botMessageDiv.innerHTML += htmlContent
 
-        let i = 0;
-        function typeCharacter() {
-            if (i < botMessage.length) {
-                botMessageDiv.innerHTML += botMessage[i];
+        const instance = new TypeIt(botMessageDiv, {
+            html: true,
+            speed: 10,
+            afterStep: function(instance) {
+                let chatBox = document.getElementById("chat-box-wrapper");
                 chatBox.scrollTop = chatBox.scrollHeight;
-                i++;
-                setTimeout(typeCharacter, 20);
             }
-        }
-        typeCharacter();
+        }).type(htmlContent).go();
+
+        instance.reset();
+
+        // let i = 0;
+        // function typeCharacter() {
+        //     if (i < htmlContent.length) {
+        //         botMessageDiv.innerHTML += htmlContent.slice(0, i);
+        //         chatBox.scrollTop = chatBox.scrollHeight;
+        //         i++;
+        //         setTimeout(typeCharacter, 20);
+        //     }
+        // }
+        // typeCharacter();
     } catch (error) {
         loaderDiv.remove();
         chatBox.innerHTML += `<div class='bot-message text-danger'>Error: Unable to fetch response.</div>`;
