@@ -1,7 +1,9 @@
 initializeRecentQuestions();
 function initializeRecentQuestions() {
     let qus = JSON.parse(localStorage.getItem("recent_questions"));
-    qus.reverse();
+    if (qus && qus.length > 0) {
+        qus.reverse();
+    }
     for (let i = 0; i < qus.length; i++) {
         appendRecentQuestion(qus[i]);
     }
