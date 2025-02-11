@@ -1,6 +1,8 @@
 document.addEventListener("DOMContentLoaded", function () {
     initializeRecentQuestions();
     initializeFrequentQuestions();
+    document.getElementById("chat-box-wrapper").innerHTML = "<small class='text-gray'>" +
+        "আমি একটি আই সহকারী যে ইসলামিক অধ্যয়ন সম্পর্কে প্রশ্নের উত্তর দিতে পারি। আমি সঠিক, সংক্ষিপ্ত এবং সম্মানজনক উত্তর প্রদানের চেষ্টা করি। যদি আমি কোনো উত্তরে নিশ্চিত না হই, তাহলে আমি আরও গবেষণার প্রয়োজনীয়তা নির্দেশ করি।\n</small>";
 });
 
 function fetchFrequentQuestions(subject) {
@@ -126,7 +128,7 @@ async function sendMessage() {
 
     let loaderDiv = document.createElement("div");
     loaderDiv.classList.add("loader");
-    loaderDiv.innerHTML = "জানাচ্ছি, একটু অপেক্ষা করেন...";
+    loaderDiv.innerHTML = "<span>জানাচ্ছি,</span> <span>একটু</span> <span>অপেক্ষা</span> <span>করেন</span><span>.</span><span>.</span><span>.</span>";
 
     chatBox.appendChild(loaderDiv);
     chatBox.scrollTop = chatBox.scrollHeight;
