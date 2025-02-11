@@ -1,28 +1,92 @@
-initializeRecentQuestions();
-function initializeRecentQuestions() {
-    let qus = JSON.parse(localStorage.getItem("recent_questions"));
-    if (qus && qus.length > 0) {
-        qus.reverse();
-        for (let i = 0; i < qus.length; i++) {
-            appendRecentQuestion(qus[i]);
-        }
+document.addEventListener("DOMContentLoaded", function () {
+    initializeRecentQuestions();
+    initializeFrequentQuestions();
+});
+
+function fetchFrequentQuestions(subject) {
+    if (subject === "namaz") {
+        return ["সেজদা সাহু দিতে ভুলে গেলে করণীয়", "অসুস্থ ব্যক্তি কীভাবে নামায আদায় করবে"]
+    } else if (subject === "roza") {
+        return ["রমজান মাসের প্রস্তুতি কেমন হবে?", "রোযা ভঙ্গের কারণসমূহ"]
+    } else if (subject === "quran") {
+        return ["সূরা ইখলাস পড়ার ফযীলত"]
+    } else if (subject === "zakat") {
+        return ["যাদের উপর যাকাত ফরয হয়", "যেসব জিনিসের উপর যাকাত ফরয হয়"]
     } else {
-        let recentEle = document.getElementById("recent_questions");
-        recentEle.innerHTML = "<small>আপনি এখনও কিছু জিজ্ঞাসা করেননি</small>";
+        return ["যাদের উপর যাকাত ফরয হয়", "যেসব জিনিসের উপর যাকাত ফরয হয়", "রমজান মাসের প্রস্তুতি কেমন হবে?", "রোযা ভঙ্গের কারণসমূহ", "সেজদা সাহু দিতে ভুলে গেলে করণীয়",  "সূরা ইখলাস পড়ার ফযীলত", "অসুস্থ ব্যক্তি কীভাবে নামায আদায় করবে"]
     }
 }
 
+function clearHistory() {
+    alert(" আপনি কি নিশ্চিত?");
+    localStorage.setItem('recent_questions', JSON.stringify([]));
+    let recentEle = document.getElementById("recent_questions");
+    recentEle.innerHTML = "<small>আপনি এখনও কিছু জিজ্ঞাসা করেননি</small>";
+    document.getElementById("delete-history-btn").style.display = "none";
+}
 
+document.getElementById("frequent-filter").addEventListener('keyup', (event) => {
+    filterFrequentQuestions(event.target.value);
+})
+
+let frequent_questions = fetchFrequentQuestions();
+function filterFrequentQuestions(term) {
+    let filtered = frequent_questions.filter(question => question.includes(term));
+    if (filtered.length > 0) {
+        let recentEle = document.getElementById("frequent_questions");
+        recentEle.innerHTML = '';
+        initializeFrequentQuestions(filtered);
+    }
+}
+
+function toggleSubject(subject) {
+    let subjectiveQuestions = fetchFrequentQuestions(subject)
+    if (subjectiveQuestions.length > 0) {
+        let recentEle = document.getElementById("frequent_questions");
+        recentEle.innerHTML = '';
+        initializeFrequentQuestions(subjectiveQuestions);
+    }
+}
+function initializeFrequentQuestions(questions) {
+    let frequent_questions = questions || fetchFrequentQuestions();
+    for (let i = 0; i < frequent_questions.length; i++) {
+        appendFrequentQuestion(frequent_questions[i]);
+    }
+}
+function initializeRecentQuestions() {
+    let qus = JSON.parse(localStorage.getItem("recent_questions"));
+    if (qus && qus.length > 0) {
+        for (let i = 0; i < qus.length; i++) {
+            appendRecentQuestion(qus[i]);
+        }
+        document.getElementById("delete-history-btn").style.display = "block";
+    } else {
+        let recentEle = document.getElementById("recent_questions");
+        recentEle.innerHTML = "<small>আপনি এখনও কিছু জিজ্ঞাসা করেননি</small>";
+        document.getElementById("delete-history-btn").style.display = "none";
+    }
+}
+
+function appendFrequentQuestion(question) {
+    let recentEle = document.getElementById("frequent_questions");
+    appendChild(recentEle, question);
+}
 
 function appendRecentQuestion(question) {
     let recentEle = document.getElementById("recent_questions");
-    let button = document.createElement("button");
-    button.classList.add("btn", "btn-light", "btn-sm", "btn-block", "mb-2", "d-block");
-    button.addEventListener("click", function() {
+    appendChild(recentEle, question);
+    document.getElementById("delete-history-btn").style.display = "block";
+}
+
+function appendChild(parent, question) {
+    let item = document.createElement("div");
+    item.classList.add("question-item");
+    item.setAttribute("title", "জানতে ক্লিক করুন");
+    item.addEventListener("click", function() {
         frequentQuestion(question)
     });
-    button.innerHTML = question;
-    recentEle.insertBefore(button, recentEle.firstChild)
+    item.innerHTML = question;
+    parent.insertBefore(item, parent.firstChild);
 }
 
 function frequentQuestion(content) {
@@ -32,7 +96,7 @@ function frequentQuestion(content) {
 
 const userInput = document.getElementById("user-input");
 userInput.onkeyup = function(e){
-    if(e.keyCode === 13){
+    if(e.key === "Enter"){
         sendMessage();
     }
 }

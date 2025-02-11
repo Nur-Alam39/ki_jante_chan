@@ -7,19 +7,53 @@
     <link href="/assets/styles.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
+    <script src="https://kit.fontawesome.com/e7614781de.js" crossorigin="anonymous"></script>
 </head>
 <body>
-    <div class="container-fluid">
+    <nav class="navbar navbar-expand-lg bg-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#"><b>দ্বীনি জিজ্ঞাসা</b></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item"><a class="nav-link" href="#" onclick="toggleSubject('')">  সকল বিষয় </a></li>
+                    <li class="nav-item"><a class="nav-link" href="#" onclick="toggleSubject('namaz')"> নামাজ</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#" onclick="toggleSubject('roza')">রোজা</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#" onclick="toggleSubject('quran')">কুরআন</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#" onclick="toggleSubject('zakat')">যাকাত</a></li>
+                </ul>
+                <form class="d-flex" role="search">
+
+                </form>
+            </div>
+        </div>
+    </nav>
+    <div class="container-fluid pt-3">
         <div class="row">
-            <div class="col-md-3">
+            <div class="col-md-3 mb-0 mb-sm-4">
                 <div class="card h-100">
                     <div class="card-body">
-                       <b> সাম্প্রতিক জিজ্ঞাসা সমূহ</b><br><br>
+                        <b> সাম্প্রতিক জিজ্ঞাসা সমূহ</b><br><br>
                         <div id="recent_questions"></div>
+                    </div>
+                    <div class="px-3 py-2 ">
+                        <div id="delete-history-btn" class="btn btn-sm btn-light mt-4" onclick="clearHistory()">
+                            <small><i class="fa-solid fa-trash"></i> আগের জিজ্ঞাসা মুছুন</small>
+                        </div>
+                    </div>
+                    <div class="px-3 py-2 border-top">
+                        <small>
+                            কারিগরি সহায়তায়: &nbsp;
+                            <a href="https://github.com/Nur-Alam39/ki_jante_chan" target="_blank"> নুর-ই-আলম জনি </a>
+                        </small>
                     </div>
                 </div>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-6 mb-0 mb-sm-4">
                 <div class="chat-container">
                     <p><b>কি জানতে চান ?</b></p>
                     <div id="chat-box-wrapper" class="chat-box p-3 border rounded"></div>
@@ -28,20 +62,15 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-3 mb-0 mb-sm-4">
                 <div class="card h-100">
                     <div class="card-body">
-                        <b>সর্বাধিক জিজ্ঞাসা সমূহ</b><br><br>
-                        <button class="btn btn-light btn-sm btn-block mb-2" onclick="frequentQuestion('সেজদা সাহু দিতে ভুলে গেলে করণীয়')">সেজদা সাহু দিতে ভুলে গেলে করণীয়</button>
-                        <button class="btn btn-light btn-sm btn-block mb-2" onclick="frequentQuestion('সূরা ইখলাস পড়ার ফযীলত')">সূরা ইখলাস পড়ার ফযীলত</button>
-                        <button class="btn btn-light btn-sm btn-block mb-2" onclick="frequentQuestion('অসুস্থ ব্যক্তি কীভাবে নামায আদায় করবে')">অসুস্থ ব্যক্তি কীভাবে নামায আদায় করবে</button>
-                        <button class="btn btn-light btn-sm btn-block mb-2" onclick="frequentQuestion('রমজান মাসের প্রস্তুতি কেমন হবে?')">রমজান মাসের প্রস্তুতি কেমন হবে?</button>
+                        <b>সর্বাধিক জিজ্ঞাসা সমূহ</b><br>
+                        <input class="form-control py-1 fs-6 my-3" id="frequent-filter" type="search" placeholder="খুঁজুন..." aria-label="Search">
+                        <div id="frequent_questions"></div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="m-auto mt-3 mb-2" style="max-width: 800px; padding: 15px; text-align: center">
-            <a href="https://github.com/Nur-Alam39/ki_jante_chan" target="_blank"> নুর-ই-আলম জনি </a>
         </div>
     </div>
     <script src="assets/index.js"></script>
