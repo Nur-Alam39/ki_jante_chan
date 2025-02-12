@@ -41,6 +41,14 @@ body {
     text-align: left;
 }
 
+.fa-brands {
+    opacity: 0.5;
+}
+
+.fa-brands:hover {
+    opacity: 0.8;
+}
+
 .loader {
     font-size: 14px;
     display: flex;
