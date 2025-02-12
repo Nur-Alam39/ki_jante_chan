@@ -205,3 +205,15 @@ async function sendMessage() {
         chatBox.innerHTML += `<div class='bot-message text-danger'>Error: Unable to fetch response.</div>`;
     }
 }
+
+function changeIcon(btn) {
+    const button = document.getElementById(`${btn}-collapse-btn`);
+    const icon = button.querySelector("i"); // Select the <i> inside the button
+
+    // Check current icon class and toggle
+    if (icon.classList.contains("fa-plus")) {
+        icon.classList.replace("fa-plus", "fa-minus");
+    } else {
+        icon.classList.replace("fa-minus", "fa-plus");
+    }
+}

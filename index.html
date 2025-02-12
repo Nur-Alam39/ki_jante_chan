@@ -31,11 +31,22 @@
     </nav>
     <div class="container-fluid pt-3">
         <div class="row">
-            <div class="col-md-3 mb-3">
+            <div class="col-md-3 mb-3 order-2 order-md-1">
                 <div class="card h-100">
-                    <div class="card-body">
-                        <b> সাম্প্রতিক জিজ্ঞাসা সমূহ</b><br><br>
-                        <div id="recent_questions"></div>
+                    <div class="card-header border-0 bg-white d-flex justify-content-between align-items-center">
+                        <div class="card-title mb-0">
+                            <b>সাম্প্রতিক জিজ্ঞাসা সমূহ</b>
+                        </div>
+                        <div class="card-toolbar">
+                            <button onclick="changeIcon('recent')" class="btn btn-sm btn-default border-0" id="recent-collapse-btn" type="button" data-bs-toggle="collapse" data-bs-target="#collapseRecent" aria-expanded="false" aria-controls="collapseRecent">
+                                <i class="fa-solid fa-minus"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="collapse show h-100" id="collapseRecent">
+                        <div class="card-body">
+                            <div id="recent_questions"></div>
+                        </div>
                     </div>
                     <div class="card-footer bg-white border-0 p-2">
                         <div class="text-center">
@@ -58,24 +69,40 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-6 mb-3">
+            <div class="col-md-6 mb-3 order-1 order-md-2">
                 <div class="chat-container">
                     <p><b>কি জানতে চান ?</b></p>
                     <div id="chat-box-wrapper" class="chat-box p-3 border rounded"></div>
                     <div class="mt-3">
-                        <input type="text" id="user-input" class="form-control" placeholder="এইখানে লিখুন..."/>
+                        <div class="mt-3 input-group align-items-center border rounded px-2">
+                            <input type="text" id="user-input" class="form-control border-0" placeholder="এইখানে লিখুন...">
+                            <button class="btn btn-light rounded-circle bg-black" onclick="sendMessage()">
+                                <i class="fa-solid fa-arrow-up text-white"></i>
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="col-md-3 mb-3">
+            <div class="col-md-3 mb-3 order-3 order-md-3">
                 <div class="card h-100">
-                    <div class="card-body">
-                        <b>সর্বাধিক জিজ্ঞাসা সমূহ</b><br>
-                        <input class="form-control py-1 fs-6 my-3" id="frequent-filter" type="search" placeholder="খুঁজুন..." aria-label="Search">
-                        <div id="current-topic">
-                            সকল বিষয় এর জিজ্ঞাসা সমূহ
+                    <div class="card-header border-0 bg-white d-flex justify-content-between align-items-center">
+                        <div class="card-title mb-0">
+                            <b>সর্বাধিক জিজ্ঞাসা সমূহ</b>
                         </div>
-                        <div id="frequent_questions"></div>
+                        <div class="card-toolbar">
+                            <button onclick="changeIcon('frequent')" class="btn btn-sm btn-default border-0" id="frequent-collapse-btn" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                                <i class="fa-solid fa-minus"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="collapse show" id="collapseExample">
+                        <div class="card-body">
+                            <input class="form-control py-1 fs-6" id="frequent-filter" type="search" placeholder="খুঁজুন..." aria-label="Search">
+                            <div id="current-topic">
+                                সকল বিষয় এর জিজ্ঞাসা সমূহ
+                            </div>
+                            <div id="frequent_questions"></div>
+                        </div>
                     </div>
                 </div>
             </div>
