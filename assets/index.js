@@ -1,43 +1,76 @@
+var topics, allTopics, currentActiveLink = "all";
 document.addEventListener("DOMContentLoaded", function () {
     initializeRecentQuestions();
-    initializeFrequentQuestions();
     document.getElementById("chat-box-wrapper").innerHTML = "<small class='text-gray'>" +
         "আমি একটি আই সহকারী যে ইসলামিক অধ্যয়ন সম্পর্কে প্রশ্নের উত্তর দিতে পারি। আমি সঠিক, সংক্ষিপ্ত এবং সম্মানজনক উত্তর প্রদানের চেষ্টা করি। যদি আমি কোনো উত্তরে নিশ্চিত না হই, তাহলে আমি আরও গবেষণার প্রয়োজনীয়তা নির্দেশ করি।\n</small>";
+    fetchFrequentQuestionsData();
+
 });
 
+function initializeNavlinks() {
+    let navLinks = document.getElementById('nav-links');
+    Object.keys(topics).forEach(function (key) {
+        navLinks.innerHTML += `<li class="nav-item"><a id="${key}" class="nav-link" href="#" onclick="toggleSubject('${key}')">  ${key} </a></li>`
+    })
+}
+
+function fetchFrequentQuestionsData() {
+    fetch('assets/topics.json')
+        .then(response => response.json())
+        .then(data => {
+            topics = data[0]; // Example: Output Namaz topics
+            allTopics = Object.keys(topics).map(function (key) {
+                return topics[key];
+            });
+            allTopics = allTopics.flat();
+            initializeFrequentQuestions(allTopics);
+            initializeNavlinks();
+        })
+        .catch(error => console.error("Error fetching JSON:", error));
+}
+
 function fetchFrequentQuestions(subject) {
-    if (subject === "namaz") {
-        return ["সেজদা সাহু দিতে ভুলে গেলে করণীয়", "অসুস্থ ব্যক্তি কীভাবে নামায আদায় করবে"]
-    } else if (subject === "roza") {
-        return ["রমজান মাসের প্রস্তুতি কেমন হবে?", "রোযা ভঙ্গের কারণসমূহ"]
-    } else if (subject === "quran") {
-        return ["সূরা ইখলাস পড়ার ফযীলত"]
-    } else if (subject === "zakat") {
-        return ["যাদের উপর যাকাত ফরয হয়", "যেসব জিনিসের উপর যাকাত ফরয হয়"]
+    let link = document.getElementById(subject);
+    let currActiveLink = document.getElementById(currentActiveLink);
+    console.log('currentActiveLink = ', currentActiveLink);
+    console.log('currActiveLink Ele = ', currActiveLink);
+    console.log(subject);
+    console.log(link);
+    if (link) {
+        link.classList.add("active-link");
+        currActiveLink.classList.remove("active-link");
+        currentActiveLink = subject;
+    }
+    if (subject === "all") {
+        return allTopics;
     } else {
-        return ["যাদের উপর যাকাত ফরয হয়", "যেসব জিনিসের উপর যাকাত ফরয হয়", "রমজান মাসের প্রস্তুতি কেমন হবে?", "রোযা ভঙ্গের কারণসমূহ", "সেজদা সাহু দিতে ভুলে গেলে করণীয়",  "সূরা ইখলাস পড়ার ফযীলত", "অসুস্থ ব্যক্তি কীভাবে নামায আদায় করবে"]
+        let topic = document.getElementById("current-topic");
+        topic.innerHTML = `${subject} এর জিজ্ঞাসা সমূহ `;
+        return topics[subject];
     }
 }
 
 function clearHistory() {
-    alert(" আপনি কি নিশ্চিত?");
     localStorage.setItem('recent_questions', JSON.stringify([]));
     let recentEle = document.getElementById("recent_questions");
     recentEle.innerHTML = "<small>আপনি এখনও কিছু জিজ্ঞাসা করেননি</small>";
     document.getElementById("delete-history-btn").style.display = "none";
+    $('#exampleModal').modal('hide');
 }
 
 document.getElementById("frequent-filter").addEventListener('keyup', (event) => {
     filterFrequentQuestions(event.target.value);
 })
 
-let frequent_questions = fetchFrequentQuestions();
 function filterFrequentQuestions(term) {
-    let filtered = frequent_questions.filter(question => question.includes(term));
+    let recentEle = document.getElementById("frequent_questions");
+    let filtered = allTopics.filter(question => question.includes(term));
     if (filtered.length > 0) {
-        let recentEle = document.getElementById("frequent_questions");
         recentEle.innerHTML = '';
         initializeFrequentQuestions(filtered);
+    } else {
+        recentEle.innerHTML = '';
+        initializeFrequentQuestions(allTopics);
     }
 }
 
@@ -49,12 +82,13 @@ function toggleSubject(subject) {
         initializeFrequentQuestions(subjectiveQuestions);
     }
 }
+
 function initializeFrequentQuestions(questions) {
-    let frequent_questions = questions || fetchFrequentQuestions();
-    for (let i = 0; i < frequent_questions.length; i++) {
-        appendFrequentQuestion(frequent_questions[i]);
+    for (let i = 0; i < questions.length; i++) {
+        appendFrequentQuestion(questions[i]);
     }
 }
+
 function initializeRecentQuestions() {
     let qus = JSON.parse(localStorage.getItem("recent_questions"));
     if (qus && qus.length > 0) {
@@ -84,7 +118,7 @@ function appendChild(parent, question) {
     let item = document.createElement("div");
     item.classList.add("question-item");
     item.setAttribute("title", "জানতে ক্লিক করুন");
-    item.addEventListener("click", function() {
+    item.addEventListener("click", function () {
         frequentQuestion(question)
     });
     item.innerHTML = question;
@@ -97,8 +131,8 @@ function frequentQuestion(content) {
 }
 
 const userInput = document.getElementById("user-input");
-userInput.onkeyup = function(e){
-    if(e.key === "Enter"){
+userInput.onkeyup = function (e) {
+    if (e.key === "Enter") {
         sendMessage();
     }
 }
@@ -109,7 +143,7 @@ async function sendMessage() {
 
     let userInputs = [];
     userInputs = JSON.parse(localStorage.getItem('recent_questions')) || [];
-    if (!userInputs.includes(userInput)){
+    if (!userInputs.includes(userInput)) {
         if (userInputs.length === 0) {
             let recentEle = document.getElementById("recent_questions");
             recentEle.innerHTML = "";
@@ -137,11 +171,14 @@ async function sendMessage() {
         let response = await axios.post("https://api.together.xyz/v1/chat/completions", {
             model: "meta-llama/Llama-3.3-70B-Instruct-Turbo",
             messages: [
-                {role: "system", content: "You are an AI assistant specialized in answering questions about Islamic studies. Provide accurate, concise, and respectful responses. If unsure about an answer, indicate the need for further research. Please provide the information formatted in Markdown."},
+                {
+                    role: "system",
+                    content: "You are an AI assistant specialized in answering questions about Islamic studies. Provide accurate, concise, and respectful responses. If unsure about an answer, indicate the need for further research. Please provide the information formatted in Markdown."
+                },
                 {role: "user", content: userInput},
             ]
         }, {
-            headers: { "Authorization": "Bearer 146256ab83c558e84c2283e270855da846ff4ea4941a6cac109161c06167d88f" }
+            headers: {"Authorization": "Bearer 146256ab83c558e84c2283e270855da846ff4ea4941a6cac109161c06167d88f"}
         });
 
         loaderDiv.remove();
@@ -152,29 +189,16 @@ async function sendMessage() {
         let botMessageDiv = document.createElement("div");
         botMessageDiv.classList.add("bot-message");
         chatBox.appendChild(botMessageDiv);
-        // botMessageDiv.innerHTML += htmlContent
 
         const instance = new TypeIt(botMessageDiv, {
             html: true,
             speed: 10,
-            afterStep: function(instance) {
+            afterStep: function (instance) {
                 let chatBox = document.getElementById("chat-box-wrapper");
                 chatBox.scrollTop = chatBox.scrollHeight;
             }
         }).type(htmlContent).go();
-
         instance.reset();
-
-        // let i = 0;
-        // function typeCharacter() {
-        //     if (i < htmlContent.length) {
-        //         botMessageDiv.innerHTML += htmlContent.slice(0, i);
-        //         chatBox.scrollTop = chatBox.scrollHeight;
-        //         i++;
-        //         setTimeout(typeCharacter, 20);
-        //     }
-        // }
-        // typeCharacter();
     } catch (error) {
         loaderDiv.remove();
         chatBox.innerHTML += `<div class='bot-message text-danger'>Error: Unable to fetch response.</div>`;

@@ -10,7 +10,7 @@ body {
 }
 
 .chat-box {
-    height: calc(100vh - 275px);
+    height: calc(100vh - 270px);
     overflow-y: auto;
     scrollbar-width: thin !important;
     scrollbar-color: rgba(98, 97, 97, 0.09) #f8f9fa;
@@ -75,11 +75,15 @@ body {
     100% { opacity: 0.3; }
 }
 
-#recent_questions {
+#recent_questions, #frequent_questions {
     overflow-y: auto;
     scrollbar-width: thin !important;
     scrollbar-color: rgba(98, 97, 97, 0.09) #f8f9fa;
-    max-height: calc(100vh - 275px);
+    max-height: calc(100vh - 285px);
+}
+
+#frequent_questions {
+    max-height: calc(100vh - 270px);
 }
 
 .question-item {
@@ -99,4 +103,14 @@ body {
 
 .nav-item .nav-link:hover {
     font-weight: bold;
+}
+
+.active-link {
+    font-weight: bold !important;
+}
+
+#current-topic {
+    font-weight: bold;
+    margin: 10px 0;
+    font-size: 14px;
 }

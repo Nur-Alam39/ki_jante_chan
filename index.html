@@ -13,6 +13,7 @@
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/dompurify/dist/purify.min.js"></script>
     <script src="https://unpkg.com/typeit/dist/index.umd.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 </head>
 <body>
     <nav class="navbar navbar-expand-lg bg-light">
@@ -22,12 +23,8 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item"><a class="nav-link" href="#" onclick="toggleSubject('')">  সকল বিষয় </a></li>
-                    <li class="nav-item"><a class="nav-link" href="#" onclick="toggleSubject('namaz')"> নামাজ</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#" onclick="toggleSubject('roza')">রোজা</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#" onclick="toggleSubject('quran')">কুরআন</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#" onclick="toggleSubject('zakat')">যাকাত</a></li>
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0" id="nav-links">
+                    <li class="nav-item"><a id="all" class="nav-link active-link" href="#" onclick="toggleSubject('all')">  সকল বিষয় </a></li>
                 </ul>
             </div>
         </div>
@@ -40,21 +37,24 @@
                         <b> সাম্প্রতিক জিজ্ঞাসা সমূহ</b><br><br>
                         <div id="recent_questions"></div>
                     </div>
-                    <div class="px-3 py-2 ">
-                        <div id="delete-history-btn" class="btn btn-light mt-4" onclick="clearHistory()">
-                            <small><i style="opacity: 0.7" class="fa-solid fa-trash"></i> &nbsp; আগের জিজ্ঞাসা মুছুন</small>
+                    <div class="card-footer bg-white border-0 p-2">
+                        <div class="text-center">
+                            <button id="delete-history-btn" type="button" class="btn btn-light mx-auto" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                <small><i style="opacity: 0.7" class="fa-solid fa-trash"></i> &nbsp; আগের জিজ্ঞাসা মুছুন</small>
+                            </button>
                         </div>
-                    </div>
-                    <div class="px-3 py-2 border-top text-center">
-                        <small>
-                            <a href="https://github.com/Nur-Alam39/ki_jante_chan" class="text-black text-decoration-none" target="_blank">
-                                <i class="fa-brands fa-github fs-5"></i>
-                            </a>
-                            <a href="https://www.linkedin.com/in/nuralam39/" class="text-black text-decoration-none mx-2" target="_blank">
-                                <i class="fa-brands fa-linkedin fs-5"></i>
-                            </a>
-                            কারিগরি: &nbsp; নুর-ই-আলম জনি
-                        </small>
+                        <hr>
+                        <div class="text-center rounded">
+                            <small>
+                                <a href="https://github.com/Nur-Alam39/ki_jante_chan" class="text-black text-decoration-none" target="_blank">
+                                    <i class="fa-brands fa-github fs-5"></i>
+                                </a>
+                                <a href="https://www.linkedin.com/in/nuralam39/" class="text-black text-decoration-none mx-2" target="_blank">
+                                    <i class="fa-brands fa-linkedin fs-5"></i>
+                                </a>
+                                কারিগরি: &nbsp; নুর-ই-আলম জনি
+                            </small>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -72,6 +72,7 @@
                     <div class="card-body">
                         <b>সর্বাধিক জিজ্ঞাসা সমূহ</b><br>
                         <input class="form-control py-1 fs-6 my-3" id="frequent-filter" type="search" placeholder="খুঁজুন..." aria-label="Search">
+                        <div id="current-topic"></div>
                         <div id="frequent_questions"></div>
                     </div>
                 </div>
@@ -79,6 +80,23 @@
         </div>
     </div>
     <script src="assets/index.js"></script>
+
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header border-0">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center">
+                    <h4>আপনি কি নিশ্চিত?</h4>
+                </div>
+                <div class="modal-footer text-center d-block border-0">
+                    <button type="button" class="btn btn-light px-5" data-bs-dismiss="modal">না</button>
+                    <button type="button" class="btn btn-secondary bg-black px-5" onclick="clearHistory()">হ্যাঁ</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
 
