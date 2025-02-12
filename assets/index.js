@@ -36,15 +36,16 @@ function fetchFrequentQuestions(subject) {
     console.log('currActiveLink Ele = ', currActiveLink);
     console.log(subject);
     console.log(link);
+    let topic = document.getElementById("current-topic");
     if (link) {
         link.classList.add("active-link");
         currActiveLink.classList.remove("active-link");
         currentActiveLink = subject;
     }
     if (subject === "all") {
+        topic.innerHTML =  "সকল বিষয় এর জিজ্ঞাসা সমূহ";
         return allTopics;
     } else {
-        let topic = document.getElementById("current-topic");
         topic.innerHTML = `${subject} এর জিজ্ঞাসা সমূহ `;
         return topics[subject];
     }
