@@ -59,16 +59,17 @@ function clearHistory() {
     $('#exampleModal').modal('hide');
 }
 
-document.getElementById("frequent-filter").addEventListener('keyup', (event) => {
-    filterFrequentQuestions(event.target.value);
-})
 
 function filterFrequentQuestions(term) {
     let recentEle = document.getElementById("frequent_questions");
-    let filtered = allTopics.filter(question => question.includes(term));
-    if (filtered.length > 0) {
-        recentEle.innerHTML = '';
-        initializeFrequentQuestions(filtered);
+    if (term) {
+        let filtered = allTopics.filter(question => question.includes(term));
+        if (filtered.length > 0) {
+            recentEle.innerHTML = '';
+            initializeFrequentQuestions(filtered);
+        } else {
+            recentEle.innerHTML = 'কিছু পাওয়া যায় নি';
+        }
     } else {
         recentEle.innerHTML = '';
         initializeFrequentQuestions(allTopics);
