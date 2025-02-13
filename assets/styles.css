@@ -31,16 +31,18 @@ body {
     outline: 0;
 }
 
-.form-control:active, .form-control:focus {
+#user-input:active, #user-input:focus {
     border: none !important;
     outline: none !important;
     box-shadow: none !important;
 }
 
 .input-group:focus-within {
-    box-shadow: 0 0 6px rgba(0, 0, 0, 0.18);
+    /*box-shadow: 0 0 6px rgba(0, 0, 0, 0.18);*/
+    border: solid 1px rgba(98, 97, 97, 0.6) !important;
     border-radius: 8px;
-    transition: box-shadow 0.3s ease-in-out;
+    /*transition: box-shadow 0.3s ease-in-out;*/
+    transition: border 0.3s ease-in-out;
 }
 
 
