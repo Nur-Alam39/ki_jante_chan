@@ -2,7 +2,7 @@ var topics, allTopics, currentActiveLink = "all";
 document.addEventListener("DOMContentLoaded", function () {
     initializeRecentQuestions();
     document.getElementById("chat-box-wrapper").innerHTML = "<small class='text-gray'>" +
-        "আমি একটি আই সহকারী যে ইসলামিক অধ্যয়ন সম্পর্কে প্রশ্নের উত্তর দিতে পারি। আমি সঠিক, সংক্ষিপ্ত এবং সম্মানজনক উত্তর প্রদানের চেষ্টা করি। যদি আমি কোনো উত্তরে নিশ্চিত না হই, তাহলে আমি আরও গবেষণার প্রয়োজনীয়তা নির্দেশ করি।\n</small>";
+        "আমি একজন এআই সহকারী। আমি ইসলামিক বিভিন্ন বিষয়ের প্রশ্নের উত্তর দেওয়ার জন্য বিশেষভাবে প্রশিক্ষিত, তবে আমি যেকোনো প্রশ্নের উত্তরও দিতে পারি। <br><br>মাসলা-মাসায়েল উত্তরের ক্ষেত্রে, অনুগ্রহ করে যাচাই করুন এবং আলেমদের সাথে পরামর্শ করুন।\n</small>";
     fetchFrequentQuestionsData();
 
 });
@@ -174,7 +174,7 @@ async function sendMessage() {
             messages: [
                 {
                     role: "system",
-                    content: "You are an AI assistant specialized in answering questions about Islamic studies. Provide accurate, concise, and respectful responses. If unsure about an answer, indicate the need for further research. Please provide the information formatted in Markdown."
+                    content: "You are an AI assistant specialized in answering questions about Islamic Questions like Iman, Namaz, Zakat, Hajj, Fasting. Provide accurate, concise, and respectful responses. If unsure about an answer, indicate the need for further research. Please provide the information formatted in Markdown. Preferred language is Bengali"
                 },
                 {role: "user", content: userInput},
             ]
@@ -208,12 +208,20 @@ async function sendMessage() {
 
 function changeIcon(btn) {
     const button = document.getElementById(`${btn}-collapse-btn`);
-    const icon = button.querySelector("i"); // Select the <i> inside the button
-
-    // Check current icon class and toggle
+    const icon = button.querySelector("i");
     if (icon.classList.contains("fa-plus")) {
         icon.classList.replace("fa-plus", "fa-minus");
     } else {
         icon.classList.replace("fa-minus", "fa-plus");
+    }
+}
+
+function toggleMenuIcon() {
+    const button = document.getElementById('toggle-menu');
+    const icon = button.querySelector("span");
+    if (icon.classList.contains("fa-bars")) {
+        icon.classList.replace("fa-bars", "fa-xmark");
+    } else {
+        icon.classList.replace("fa-xmark", "fa-bars");
     }
 }

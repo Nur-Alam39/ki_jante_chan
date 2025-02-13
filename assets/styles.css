@@ -31,7 +31,7 @@ body {
     outline: 0;
 }
 
-#user-input:active, #user-input:focus {
+#user-input:active, #user-input:focus, .navbar-toggler:active, .navbar-toggler:focus {
     border: none !important;
     outline: none !important;
     box-shadow: none !important;
@@ -44,6 +44,12 @@ body {
     /*transition: box-shadow 0.3s ease-in-out;*/
     transition: border 0.3s ease-in-out;
 }
+
+.navbar-toggler {
+    border: none !important;
+}
+
+.navbar-toggler
 
 
 .bot-message {
