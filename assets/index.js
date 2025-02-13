@@ -3,6 +3,11 @@ document.addEventListener("DOMContentLoaded", function () {
     initializeRecentQuestions();
     initialInfo()
     fetchFrequentQuestionsData();
+    document.getElementById("user-input").addEventListener("onkeypress", function (event) {
+        if (event.keyCode === 13) {
+            sendMessage();
+        }
+    })
 });
 
 function initialInfo() {
@@ -139,12 +144,12 @@ function frequentQuestion(content) {
     sendMessage();
 }
 
-const userInput = document.getElementById("user-input");
-userInput.onkeyup = function (e) {
-    if (e.key === "Enter") {
-        sendMessage();
-    }
-}
+// const userInput = document.getElementById("user-input");
+// userInput.onkeyup = function (e) {
+//     if (e.key === "Enter") {
+//         sendMessage();
+//     }
+// }
 
 async function sendMessage() {
     let userInput = document.getElementById("user-input").value;
@@ -182,7 +187,7 @@ async function sendMessage() {
             messages: [
                 {
                     role: "system",
-                    content: "You are an AI assistant specialized in answering questions about Islamic Questions like Iman, Namaz, Zakat, Hajj, Fasting. Provide accurate, concise, and respectful responses with Quran, Hadith, Fiqh references. If unsure about an answer, indicate the need for further research or consult with islamic scholar. Please provide the information formatted in Markdown. Preferred language is Bengali"
+                    content: "You are an AI assistant specialized in answering questions about Islamic Questions like Iman, Namaz, Zakat, Hajj, Fasting, Quran, Hadith, Fiqh. Provide accurate, concise, and respectful responses with Quran, Hadith, Fiqh references. If unsure about an answer, indicate the need for further research or consult with islamic scholar. Please provide the information formatted in Markdown. Preferred language is Bengali"
                 },
                 {role: "user", content: userInput},
             ]
