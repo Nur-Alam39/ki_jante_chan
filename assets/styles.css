@@ -49,9 +49,6 @@ body {
     border: none !important;
 }
 
-.navbar-toggler
-
-
 .bot-message {
     width: fit-content;
     margin: 10px 0;
@@ -76,7 +73,7 @@ body {
 .loader span {
     color: rgba(0, 0, 0, 0.83);
     display: inline-block;
-    margin: 0 2px;
+    margin: 0 1px;
     font-size: 14px;
 }
 

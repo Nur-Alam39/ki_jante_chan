@@ -1,11 +1,18 @@
 var topics, allTopics, currentActiveLink = "all";
 document.addEventListener("DOMContentLoaded", function () {
     initializeRecentQuestions();
-    document.getElementById("chat-box-wrapper").innerHTML = "<small class='text-gray'>" +
-        "আমি একজন এআই সহকারী। আমি ইসলামিক বিভিন্ন বিষয়ের প্রশ্নের উত্তর দেওয়ার জন্য বিশেষভাবে প্রশিক্ষিত, তবে আমি যেকোনো প্রশ্নের উত্তরও দিতে পারি। <br><br>মাসলা-মাসায়েল উত্তরের ক্ষেত্রে, অনুগ্রহ করে যাচাই করুন এবং আলেমদের সাথে পরামর্শ করুন।\n</small>";
+    initialInfo()
     fetchFrequentQuestionsData();
-
 });
+
+function initialInfo() {
+    let chatBox = document.getElementById("chat-box-wrapper")
+    const instance = new TypeIt(chatBox, {
+        html: true,
+        speed: 10,
+    }).type("আমি একটি কৃত্রিম বুদ্ধিমত্তা মডেল। আমি ইসলামিক বিভিন্ন বিষয়ের প্রশ্নের উত্তর দেওয়ার জন্য বিশেষভাবে নির্দেশিত, তবে আমি যেকোনো প্রশ্নের উত্তরও দিতে পারি। <br><br>মাসলা-মাসায়েলের উত্তরের ক্ষেত্রে, অনুগ্রহ করে যাচাই করুন এবং আলেমদের সাথে পরামর্শ করুন।").go();
+    instance.reset();
+}
 
 function initializeNavlinks() {
     let navLinks = document.getElementById('nav-links');
