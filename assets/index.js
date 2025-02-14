@@ -3,11 +3,13 @@ document.addEventListener("DOMContentLoaded", function () {
     initializeRecentQuestions();
     initialInfo()
     fetchFrequentQuestionsData();
-    document.getElementById("user-input").addEventListener("onkeypress", function (event) {
-        if (event.keyCode === 13) {
+    $("#user-input").keyup(function(e) {
+        e.preventDefault();
+        var keycode = (e.keyCode ? e.keyCode : e.which);
+        if (keycode === 13 || e.key === 'Enter') {
             sendMessage();
         }
-    })
+    });
 });
 
 function initialInfo() {
