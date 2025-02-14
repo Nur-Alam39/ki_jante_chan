@@ -41,6 +41,11 @@ function fetchFrequentQuestionsData() {
         .catch(error => console.error("Error fetching JSON:", error));
 }
 
+function getBanglaDigit(digit) {
+    const banglaDigit = ['০', '১', '২', '৩', '৪', '৫', '৬', '৭', '৮', '৯']
+    return digit.toString().replace(/\d/g, (d) => banglaDigit[+d])
+}
+
 function fetchFrequentQuestions(subject) {
     let link = document.getElementById(subject);
     let currActiveLink = document.getElementById(currentActiveLink);
@@ -55,11 +60,13 @@ function fetchFrequentQuestions(subject) {
         currentActiveLink = subject;
     }
     if (subject === "all") {
-        topic.innerHTML =  "সকল বিষয় এর জিজ্ঞাসা সমূহ";
+        topic.innerHTML =  `সকল বিষয় এর জিজ্ঞাসা সমূহ (${getBanglaDigit(allTopics.length)} টি)`;
         return allTopics;
     } else {
-        topic.innerHTML = `${subject} এর জিজ্ঞাসা সমূহ `;
-        return topics[subject];
+        let questions = topics[subject];
+        console.log(questions);
+        topic.innerHTML = `${subject} এর জিজ্ঞাসা সমূহ (${getBanglaDigit(questions.length)} টি)`;
+        return questions;
     }
 }
 
